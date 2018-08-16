@@ -2,7 +2,7 @@
 #include "intr.h"
 #include "interrupt.h"
 
-/* ¥½¥Õ¥È¥¦¥¨¥¢¡¦³ä¹ş¤ß¥Ù¥¯¥¿¤Î½é´ü²½ */
+/* ã‚½ãƒ•ãƒˆã‚¦ã‚¨ã‚¢ãƒ»å‰²è¾¼ã¿ãƒ™ã‚¯ã‚¿ã®åˆæœŸåŒ– */
 int softvec_init(void)
 {
   int type;
@@ -11,7 +11,7 @@ int softvec_init(void)
   return 0;
 }
 
-/* ¥½¥Õ¥È¥¦¥¨¥¢¡¦³ä¹ş¤ß¥Ù¥¯¥¿¤ÎÀßÄê */
+/* ã‚½ãƒ•ãƒˆã‚¦ã‚¨ã‚¢ãƒ»å‰²è¾¼ã¿ãƒ™ã‚¯ã‚¿ã®è¨­å®š */
 int softvec_setintr(softvec_type_t type, softvec_handler_t handler)
 {
   SOFTVECS[type] = handler;
@@ -19,8 +19,8 @@ int softvec_setintr(softvec_type_t type, softvec_handler_t handler)
 }
 
 /*
- * ¶¦ÄÌ³ä¹ş¤ß¥Ï¥ó¥É¥é¡¥
- * ¥½¥Õ¥È¥¦¥¨¥¢¡¦³ä¹ş¤ß¥Ù¥¯¥¿¤ò¸«¤Æ¡¤³Æ¥Ï¥ó¥É¥é¤ËÊ¬´ô¤¹¤ë¡¥
+ * å…±é€šå‰²è¾¼ã¿ãƒãƒ³ãƒ‰ãƒ©ï¼
+ * ã‚½ãƒ•ãƒˆã‚¦ã‚¨ã‚¢ãƒ»å‰²è¾¼ã¿ãƒ™ã‚¯ã‚¿ã‚’è¦‹ã¦ï¼Œå„ãƒãƒ³ãƒ‰ãƒ©ã«åˆ†å²ã™ã‚‹ï¼
  */
 void interrupt(softvec_type_t type, unsigned long sp)
 {

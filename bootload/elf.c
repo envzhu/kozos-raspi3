@@ -38,7 +38,7 @@ struct elf_program_header {
   long align;
 };
 
-/* ELF•ÿ•√•¿§Œ•¡•ß•√•Ø */
+/* ELF„Éò„ÉÉ„ÉÄ„ÅÆ„ÉÅ„Çß„ÉÉ„ÇØ */
 static int elf_check(struct elf_header *header)
 {
   if (memcmp(header->id.magic, "\x7f" "ELF", 4))
@@ -56,19 +56,19 @@ static int elf_check(struct elf_header *header)
   return 0;
 }
 
-/* •ª•∞•·•Û•»√±∞Ã§«§Œ•Ì°º•… */
+/* „Çª„Ç∞„É°„É≥„ÉàÂçò‰Ωç„Åß„ÅÆ„É≠„Éº„Éâ */
 static int elf_load_program(struct elf_header *header)
 {
   int i;
   struct elf_program_header *phdr;
 
   for (i = 0; i < header->program_header_num; i++) {
-    /* •◊•Ì•∞•È•‡°¶•ÿ•√•¿§ÚºË∆¿ */
+    /* „Éó„É≠„Ç∞„É©„É†„Éª„Éò„ÉÉ„ÉÄ„ÇíÂèñÂæó */
     phdr = (struct elf_program_header *)
       ((char *)header + header->program_header_offset +
        header->program_header_size * i);
 
-    if (phdr->type != 1) /* •Ì°º•…≤ƒ«Ω§ •ª•∞•·•Û•»§´°© */
+    if (phdr->type != 1) /* „É≠„Éº„ÉâÂèØËÉΩ„Å™„Çª„Ç∞„É°„É≥„Éà„ÅãÔºü */
       continue;
 
     memcpy((char *)phdr->physical_addr, (char *)header + phdr->offset,
@@ -84,10 +84,10 @@ char *elf_load(char *buf)
 {
   struct elf_header *header = (struct elf_header *)buf;
 
-  if (elf_check(header) < 0) /* ELF•ÿ•√•¿§Œ•¡•ß•√•Ø */
+  if (elf_check(header) < 0) /* ELF„Éò„ÉÉ„ÉÄ„ÅÆ„ÉÅ„Çß„ÉÉ„ÇØ */
     return NULL;
 
-  if (elf_load_program(header) < 0) /* •ª•∞•·•Û•»√±∞Ã§«§Œ•Ì°º•… */
+  if (elf_load_program(header) < 0) /* „Çª„Ç∞„É°„É≥„ÉàÂçò‰Ωç„Åß„ÅÆ„É≠„Éº„Éâ */
     return NULL;
 
   return (char *)header->entry_point;

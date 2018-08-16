@@ -13,7 +13,7 @@
 
 #define XMODEM_BLOCK_SIZE 128
 
-/* ¼õ¿®³«»Ï¤µ¤ì¤ë¤Ş¤ÇÁ÷¿®Í×µá¤ò½Ğ¤¹ */
+/* å—ä¿¡é–‹å§‹ã•ã‚Œã‚‹ã¾ã§é€ä¿¡è¦æ±‚ã‚’å‡ºã™ */
 static int xmodem_wait(void)
 {
   long cnt = 0;
@@ -28,7 +28,7 @@ static int xmodem_wait(void)
   return 0;
 }
 
-/* ¥Ö¥í¥Ã¥¯Ã±°Ì¤Ç¤Î¼õ¿® */
+/* ãƒ–ãƒ­ãƒƒã‚¯å˜ä½ã§ã®å—ä¿¡ */
 static int xmodem_read_block(unsigned char block_number, char *buf)
 {
   unsigned char c, block_num, check_sum;
@@ -64,21 +64,21 @@ long xmodem_recv(char *buf)
 
   while (1) {
     if (!receiving)
-      xmodem_wait(); /* ¼õ¿®³«»Ï¤µ¤ì¤ë¤Ş¤ÇÁ÷¿®Í×µá¤ò½Ğ¤¹ */
+      xmodem_wait(); /* å—ä¿¡é–‹å§‹ã•ã‚Œã‚‹ã¾ã§é€ä¿¡è¦æ±‚ã‚’å‡ºã™ */
 
     c = serial_recv_byte(SERIAL_DEFAULT_DEVICE);
 
-    if (c == XMODEM_EOT) { /* ¼õ¿®½ªÎ» */
+    if (c == XMODEM_EOT) { /* å—ä¿¡çµ‚äº† */
       serial_send_byte(SERIAL_DEFAULT_DEVICE, XMODEM_ACK);
       break;
-    } else if (c == XMODEM_CAN) { /* ¼õ¿®ÃæÃÇ */
+    } else if (c == XMODEM_CAN) { /* å—ä¿¡ä¸­æ–­ */
       return -1;
-    } else if (c == XMODEM_SOH) { /* ¼õ¿®³«»Ï */
+    } else if (c == XMODEM_SOH) { /* å—ä¿¡é–‹å§‹ */
       receiving++;
-      r = xmodem_read_block(block_number, buf); /* ¥Ö¥í¥Ã¥¯Ã±°Ì¤Ç¤Î¼õ¿® */
-      if (r < 0) { /* ¼õ¿®¥¨¥é¡¼ */
+      r = xmodem_read_block(block_number, buf); /* ãƒ–ãƒ­ãƒƒã‚¯å˜ä½ã§ã®å—ä¿¡ */
+      if (r < 0) { /* å—ä¿¡ã‚¨ãƒ©ãƒ¼ */
 	serial_send_byte(SERIAL_DEFAULT_DEVICE, XMODEM_NAK);
-      } else { /* Àµ¾ï¼õ¿® */
+      } else { /* æ­£å¸¸å—ä¿¡ */
 	block_number++;
 	size += r;
 	buf  += r;

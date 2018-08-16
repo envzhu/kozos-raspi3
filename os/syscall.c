@@ -3,7 +3,7 @@
 #include "interrupt.h"
 #include "syscall.h"
 
-/* ¥·¥¹¥Æ¥à¡¦¥³¡¼¥ë */
+/* ã‚·ã‚¹ãƒ†ãƒ ãƒ»ã‚³ãƒ¼ãƒ« */
 
 kz_thread_id_t kz_run(kz_func_t func, char *name, int priority, int stacksize,
 		      int argc, char *argv[])
@@ -106,7 +106,7 @@ int kz_setintr(softvec_type_t type, kz_handler_t handler)
   return param.un.setintr.ret;
 }
 
-/* ¥µ¡¼¥Ó¥¹¡¦¥³¡¼¥ë */
+/* ã‚µãƒ¼ãƒ“ã‚¹ãƒ»ã‚³ãƒ¼ãƒ« */
 
 int kx_wakeup(kz_thread_id_t id)
 {

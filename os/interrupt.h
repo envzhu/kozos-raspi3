@@ -1,7 +1,7 @@
 #ifndef _INTERRUPT_H_INCLUDED_
 #define _INTERRUPT_H_INCLUDED_
 
-/* °Ê²¼¤Ï¥ê¥ó¥«¡¦¥¹¥¯¥ê¥×¥È¤ÇÄêµÁ¤·¤Æ¤¢¤ë¥·¥ó¥Ü¥ë */
+/* ä»¥ä¸‹ã¯ãƒªãƒ³ã‚«ãƒ»ã‚¹ã‚¯ãƒªãƒ—ãƒˆã§å®šç¾©ã—ã¦ã‚ã‚‹ã‚·ãƒ³ãƒœãƒ« */
 extern char softvec;
 #define SOFTVEC_ADDR (&softvec)
 
@@ -14,13 +14,13 @@ typedef void (*softvec_handler_t)(softvec_type_t type, unsigned long sp);
 #define INTR_ENABLE  asm volatile ("andc.b #0x3f,ccr")
 #define INTR_DISABLE asm volatile ("orc.b #0xc0,ccr")
 
-/* ¥½¥Õ¥È¥¦¥¨¥¢¡¦³ä¹ş¤ß¥Ù¥¯¥¿¤Î½é´ü²½ */
+/* ã‚½ãƒ•ãƒˆã‚¦ã‚¨ã‚¢ãƒ»å‰²è¾¼ã¿ãƒ™ã‚¯ã‚¿ã®åˆæœŸåŒ– */
 int softvec_init(void);
 
-/* ¥½¥Õ¥È¥¦¥¨¥¢¡¦³ä¹ş¤ß¥Ù¥¯¥¿¤ÎÀßÄê */
+/* ã‚½ãƒ•ãƒˆã‚¦ã‚¨ã‚¢ãƒ»å‰²è¾¼ã¿ãƒ™ã‚¯ã‚¿ã®è¨­å®š */
 int softvec_setintr(softvec_type_t type, softvec_handler_t handler);
 
-/* ¶¦ÄÌ³ä¹ş¤ß¥Ï¥ó¥É¥é */
+/* å…±é€šå‰²è¾¼ã¿ãƒãƒ³ãƒ‰ãƒ© */
 void interrupt(softvec_type_t type, unsigned long sp);
 
 #endif

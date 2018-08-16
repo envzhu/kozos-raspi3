@@ -7,26 +7,26 @@
 
 static int init(void)
 {
-  /* �ʲ��ϥ�󥫡�������ץȤ�������Ƥ��륷��ܥ� */
+  /* 以下はリンカ・スクリプトで定義してあるシンボル */
   extern int erodata, data_start, edata, bss_start, ebss;
 
   /*
-   * �ǡ����ΰ��BSS�ΰ���������롥���ν����ʹߤǤʤ��ȡ�
-   * �������Х��ѿ������������Ƥ��ʤ��Τ����ա�
+   * データ領域とBSS領域を初期化する．この処理以降でないと，
+   * グローバル変数が初期化されていないので注意．
    */
   memcpy(&data_start, &erodata, (long)&edata - (long)&data_start);
   memset(&bss_start, 0, (long)&ebss - (long)&bss_start);
 
-  /* ���եȥ������������ߥ٥������������� */
+  /* ソフトウエア・割り込みベクタを初期化する */
   softvec_init();
 
-  /* ���ꥢ��ν���� */
+  /* シリアルの初期化 */
   serial_init(SERIAL_DEFAULT_DEVICE);
 
   return 0;
 }
 
-/* �����16�ʥ���׽��� */
+/* メモリの16進ダンプ出力 */
 static int dump(char *buf, long size)
 {
   long i;
@@ -63,34 +63,34 @@ int main(void)
   static unsigned char *loadbuf = NULL;
   char *entry_point;
   void (*f)(void);
-  extern int buffer_start; /* ��󥫡�������ץȤ��������Ƥ���Хåե� */
+  extern int buffer_start; /* リンカ・スクリプトで定義されているバッファ */
 
-  INTR_DISABLE; /* �����̵���ˤ��� */
+  INTR_DISABLE; /* 割込み無効にする */
 
   init();
 
   puts("kzload (kozos boot loader) started.\n");
 
   while (1) {
-    puts("kzload> "); /* �ץ���ץ�ɽ�� */
-    gets(buf); /* ���ꥢ�뤫��Υ��ޥ�ɼ��� */
+    puts("kzload> "); /* プロンプト表示 */
+    gets(buf); /* シリアルからのコマンド受信 */
 
-    if (!strcmp(buf, "load")) { /* XMODEM�ǤΥե�����Υ���������� */
+    if (!strcmp(buf, "load")) { /* XMODEMでのファイルのダウンロード */
       loadbuf = (char *)(&buffer_start);
       size = xmodem_recv(loadbuf);
-      wait(); /* ž�����ץ꤬��λ��ü�����ץ�����椬���ޤ��Ԥ���碌�� */
+      wait(); /* 転送アプリが終了し端末アプリに制御が戻るまで待ち合わせる */
       if (size < 0) {
 	puts("\nXMODEM receive error!\n");
       } else {
 	puts("\nXMODEM receive succeeded.\n");
       }
-    } else if (!strcmp(buf, "dump")) { /* �����16�ʥ���׽��� */
+    } else if (!strcmp(buf, "dump")) { /* メモリの16進ダンプ出力 */
       puts("size: ");
       putxval(size, 0);
       puts("\n");
       dump(loadbuf, size);
-    } else if (!strcmp(buf, "run")) { /* ELF�����ե�����μ¹� */
-      entry_point = elf_load(loadbuf); /* ������Ÿ��(������) */
+    } else if (!strcmp(buf, "run")) { /* ELF形式ファイルの実行 */
+      entry_point = elf_load(loadbuf); /* メモリ上に展開(ロード) */
       if (!entry_point) {
 	puts("run error!\n");
       } else {
@@ -98,8 +98,8 @@ int main(void)
 	putxval((unsigned long)entry_point, 0);
 	puts("\n");
 	f = (void (*)(void))entry_point;
-	f(); /* �����ǡ������ɤ����ץ������˽������Ϥ� */
-	/* �����ˤ��֤äƤ��ʤ� */
+	f(); /* ここで，ロードしたプログラムに処理を渡す */
+	/* ここには返ってこない */
       }
     } else {
       puts("unknown.\n");

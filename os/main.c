@@ -3,16 +3,16 @@
 #include "interrupt.h"
 #include "lib.h"
 
-/* ¥·¥¹¥Æ¥à¡¦¥¿¥¹¥¯¤È¥æ¡¼¥¶¡¦¥¿¥¹¥¯¤Îµ¯Æ° */
+/* ã‚·ã‚¹ãƒ†ãƒ ãƒ»ã‚¿ã‚¹ã‚¯ã¨ãƒ¦ãƒ¼ã‚¶ãƒ»ã‚¿ã‚¹ã‚¯ã®èµ·å‹• */
 static int start_threads(int argc, char *argv[])
 {
   kz_run(consdrv_main, "consdrv",  1, 0x200, 0, NULL);
   kz_run(command_main, "command",  8, 0x200, 0, NULL);
 
-  kz_chpri(15); /* Í¥Àè½ç°Ì¤ò²¼¤²¤Æ¡¤¥¢¥¤¥É¥ë¥¹¥ì¥Ã¥É¤Ë°Ü¹Ô¤¹¤ë */
-  INTR_ENABLE; /* ³ä¹ş¤ßÍ­¸ú¤Ë¤¹¤ë */
+  kz_chpri(15); /* å„ªå…ˆé †ä½ã‚’ä¸‹ã’ã¦ï¼Œã‚¢ã‚¤ãƒ‰ãƒ«ã‚¹ãƒ¬ãƒƒãƒ‰ã«ç§»è¡Œã™ã‚‹ */
+  INTR_ENABLE; /* å‰²è¾¼ã¿æœ‰åŠ¹ã«ã™ã‚‹ */
   while (1) {
-    asm volatile ("sleep"); /* ¾ÊÅÅÎÏ¥â¡¼¥É¤Ë°Ü¹Ô */
+    asm volatile ("sleep"); /* çœé›»åŠ›ãƒ¢ãƒ¼ãƒ‰ã«ç§»è¡Œ */
   }
 
   return 0;
@@ -20,13 +20,13 @@ static int start_threads(int argc, char *argv[])
 
 int main(void)
 {
-  INTR_DISABLE; /* ³ä¹ş¤ßÌµ¸ú¤Ë¤¹¤ë */
+  INTR_DISABLE; /* å‰²è¾¼ã¿ç„¡åŠ¹ã«ã™ã‚‹ */
 
   puts("kozos boot succeed!\n");
 
-  /* OS¤ÎÆ°ºî³«»Ï */
+  /* OSã®å‹•ä½œé–‹å§‹ */
   kz_start(start_threads, "idle", 0, 0x100, 0, NULL);
-  /* ¤³¤³¤Ë¤ÏÌá¤Ã¤Æ¤³¤Ê¤¤ */
+  /* ã“ã“ã«ã¯æˆ»ã£ã¦ã“ãªã„ */
 
   return 0;
 }

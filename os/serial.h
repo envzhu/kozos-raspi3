@@ -1,16 +1,16 @@
 #ifndef _SERIAL_H_INCLUDED_
 #define _SERIAL_H_INCLUDED_
 
-int serial_init(int index);                       /* ¥Ç¥Ğ¥¤¥¹½é´ü²½ */
-int serial_is_send_enable(int index);             /* Á÷¿®²ÄÇ½¤«¡© */
-int serial_send_byte(int index, unsigned char b); /* £±Ê¸»úÁ÷¿® */
-int serial_is_recv_enable(int index);             /* ¼õ¿®²ÄÇ½¤«¡© */
-unsigned char serial_recv_byte(int index);        /* £±Ê¸»ú¼õ¿® */
-int serial_intr_is_send_enable(int index);        /* Á÷¿®³ä¹ş¤ßÍ­¸ú¤«¡© */
-void serial_intr_send_enable(int index);          /* Á÷¿®³ä¹ş¤ßÍ­¸ú²½ */
-void serial_intr_send_disable(int index);         /* Á÷¿®³ä¹ş¤ßÌµ¸ú²½ */
-int serial_intr_is_recv_enable(int index);        /* ¼õ¿®³ä¹ş¤ßÍ­¸ú¤«¡© */
-void serial_intr_recv_enable(int index);          /* ¼õ¿®³ä¹ş¤ßÍ­¸ú²½ */
-void serial_intr_recv_disable(int index);         /* ¼õ¿®³ä¹ş¤ßÌµ¸ú²½ */
+int serial_init(int index);                       /* ãƒ‡ãƒã‚¤ã‚¹åˆæœŸåŒ– */
+int serial_is_send_enable(int index);             /* é€ä¿¡å¯èƒ½ã‹ï¼Ÿ */
+int serial_send_byte(int index, unsigned char b); /* ï¼‘æ–‡å­—é€ä¿¡ */
+int serial_is_recv_enable(int index);             /* å—ä¿¡å¯èƒ½ã‹ï¼Ÿ */
+unsigned char serial_recv_byte(int index);        /* ï¼‘æ–‡å­—å—ä¿¡ */
+int serial_intr_is_send_enable(int index);        /* é€ä¿¡å‰²è¾¼ã¿æœ‰åŠ¹ã‹ï¼Ÿ */
+void serial_intr_send_enable(int index);          /* é€ä¿¡å‰²è¾¼ã¿æœ‰åŠ¹åŒ– */
+void serial_intr_send_disable(int index);         /* é€ä¿¡å‰²è¾¼ã¿ç„¡åŠ¹åŒ– */
+int serial_intr_is_recv_enable(int index);        /* å—ä¿¡å‰²è¾¼ã¿æœ‰åŠ¹ã‹ï¼Ÿ */
+void serial_intr_recv_enable(int index);          /* å—ä¿¡å‰²è¾¼ã¿æœ‰åŠ¹åŒ– */
+void serial_intr_recv_disable(int index);         /* å—ä¿¡å‰²è¾¼ã¿ç„¡åŠ¹åŒ– */
 
 #endif

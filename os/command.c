@@ -3,7 +3,7 @@
 #include "consdrv.h"
 #include "lib.h"
 
-/* ���󥽡��롦�ɥ饤�Фλ��ѳ��Ϥ򥳥󥽡��롦�ɥ饤�Ф˰��ꤹ�� */
+/* コンソール・ドライバの使用開始をコンソール・ドライバに依頼する */
 static void send_use(int index)
 {
   char *p;
@@ -14,7 +14,7 @@ static void send_use(int index)
   kz_send(MSGBOX_ID_CONSOUTPUT, 3, p);
 }
 
-/* ���󥽡���ؤ�ʸ������Ϥ򥳥󥽡��롦�ɥ饤�Ф˰��ꤹ�� */
+/* コンソールへの文字列出力をコンソール・ドライバに依頼する */
 static void send_write(char *str)
 {
   char *p;
@@ -35,14 +35,14 @@ int command_main(int argc, char *argv[])
   send_use(SERIAL_DEFAULT_DEVICE);
 
   while (1) {
-    send_write("command> "); /* �ץ���ץ�ɽ�� */
+    send_write("command> "); /* プロンプト表示 */
 
-    /* ���󥽡��뤫��μ���ʸ����������� */
+    /* コンソールからの受信文字列を受け取る */
     kz_recv(MSGBOX_ID_CONSINPUT, &size, &p);
     p[size] = '\0';
 
-    if (!strncmp(p, "echo", 4)) { /* echo���ޥ�� */
-      send_write(p + 4); /* echo��³��ʸ�������Ϥ��� */
+    if (!strncmp(p, "echo", 4)) { /* echoコマンド */
+      send_write(p + 4); /* echoに続く文字列を出力する */
       send_write("\n");
     } else {
       send_write("unknown.\n");

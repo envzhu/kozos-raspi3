@@ -5,7 +5,7 @@
 #include "interrupt.h"
 #include "syscall.h"
 
-/* ¥·¥¹¥Æ¥à¡¦¥³¡¼¥ë */
+/* ã‚·ã‚¹ãƒ†ãƒ ãƒ»ã‚³ãƒ¼ãƒ« */
 kz_thread_id_t kz_run(kz_func_t func, char *name, int priority, int stacksize,
 		      int argc, char *argv[]);
 void kz_exit(void);
@@ -20,23 +20,23 @@ int kz_send(kz_msgbox_id_t id, int size, char *p);
 kz_thread_id_t kz_recv(kz_msgbox_id_t id, int *sizep, char **pp);
 int kz_setintr(softvec_type_t type, kz_handler_t handler);
 
-/* ¥µ¡¼¥Ó¥¹¡¦¥³¡¼¥ë */
+/* ã‚µãƒ¼ãƒ“ã‚¹ãƒ»ã‚³ãƒ¼ãƒ« */
 int kx_wakeup(kz_thread_id_t id);
 void *kx_kmalloc(int size);
 int kx_kmfree(void *p);
 int kx_send(kz_msgbox_id_t id, int size, char *p);
 
-/* ¥é¥¤¥Ö¥é¥ê´Ø¿ô */
+/* ãƒ©ã‚¤ãƒ–ãƒ©ãƒªé–¢æ•° */
 void kz_start(kz_func_t func, char *name, int priority, int stacksize,
 	      int argc, char *argv[]);
 void kz_sysdown(void);
 void kz_syscall(kz_syscall_type_t type, kz_syscall_param_t *param);
 void kz_srvcall(kz_syscall_type_t type, kz_syscall_param_t *param);
 
-/* ¥·¥¹¥Æ¥à¡¦¥¿¥¹¥¯ */
+/* ã‚·ã‚¹ãƒ†ãƒ ãƒ»ã‚¿ã‚¹ã‚¯ */
 int consdrv_main(int argc, char *argv[]);
 
-/* ¥æ¡¼¥¶¡¦¥¿¥¹¥¯ */
+/* ãƒ¦ãƒ¼ã‚¶ãƒ»ã‚¿ã‚¹ã‚¯ */
 int command_main(int argc, char *argv[]);
 
 #endif

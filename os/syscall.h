@@ -4,7 +4,7 @@
 #include "defines.h"
 #include "interrupt.h"
 
-/* ¥·¥¹¥Æ¥à¡¦¥³¡¼¥ëÈÖ¹æ¤ÎÄêµÁ */
+/* ã‚·ã‚¹ãƒ†ãƒ ãƒ»ã‚³ãƒ¼ãƒ«ç•ªå·ã®å®šç¾© */
 typedef enum {
   KZ_SYSCALL_TYPE_RUN = 0,
   KZ_SYSCALL_TYPE_EXIT,
@@ -20,7 +20,7 @@ typedef enum {
   KZ_SYSCALL_TYPE_SETINTR,
 } kz_syscall_type_t;
 
-/* ¥·¥¹¥Æ¥à¡¦¥³¡¼¥ë¸Æ¤Ó½Ğ¤·»ş¤Î¥Ñ¥é¥á¡¼¥¿³ÊÇ¼°è¤ÎÄêµÁ */
+/* ã‚·ã‚¹ãƒ†ãƒ ãƒ»ã‚³ãƒ¼ãƒ«å‘¼ã³å‡ºã—æ™‚ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æ ¼ç´åŸŸã®å®šç¾© */
 typedef struct {
   union {
     struct {

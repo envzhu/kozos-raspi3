@@ -1,8 +1,8 @@
 #ifndef _KOZOS_MEMORY_H_INCLUDED_
 #define _KOZOS_MEMORY_H_INCLUDED_
 
-int kzmem_init(void);        /* ╞░┼кесетеъд╬╜щ┤№▓╜ */
-void *kzmem_alloc(int size); /* ╞░┼кесетеъд╬│═╞└ */
-void kzmem_free(void *mem);  /* есетеъд╬▓Є╩№ */
+int kzmem_init(void);        /* хЛХчЪДуГбуГвуГкуБохИЭцЬЯхМЦ */
+void *kzmem_alloc(int size); /* хЛХчЪДуГбуГвуГкуБочН▓х╛Ч */
+void kzmem_free(void *mem);  /* уГбуГвуГкуБошзгцФ╛ */
 
 #endif

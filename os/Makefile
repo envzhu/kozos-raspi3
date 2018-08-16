@@ -22,7 +22,7 @@ OBJS += kozos.o syscall.o memory.o consdrv.o command.o
 TARGET = kozos
 
 CFLAGS = -Wall -mh -nostdinc -nostdlib -fno-builtin
-#CFLAGS += -mint32 # int��32�ӥåȤˤ���ȳݻ����任���Ǥ��ʤ��ʤ�
+#CFLAGS += -mint32 # intを32ビットにすると掛算／割算ができなくなる
 CFLAGS += -I.
 #CFLAGS += -g
 CFLAGS += -Os

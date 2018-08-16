@@ -1,13 +1,13 @@
 #include "defines.h"
 
-extern void start(void);        /* е╣е┐б╝е╚бжеве├е╫ */
-extern void intr_softerr(void); /* е╜е╒е╚ежеиевбжеиещб╝ */
-extern void intr_syscall(void); /* е╖е╣е╞ербже│б╝еы */
-extern void intr_serintr(void); /* е╖еъевеы│ф╣■д▀ */
+extern void start(void);        /* уВ╣уВ┐уГ╝уГИуГ╗уВвуГГуГЧ */
+extern void intr_softerr(void); /* уВ╜уГХуГИуВжуВиуВвуГ╗уВиуГйуГ╝ */
+extern void intr_syscall(void); /* уВ╖уВ╣уГЖуГауГ╗уВ│уГ╝уГл */
+extern void intr_serintr(void); /* уВ╖уГкуВвуГлхЙ▓ш╛╝уБ┐ */
 
 /*
- * │ф╣■д▀е┘епе┐д╬└▀─ъбе
- * еъеєелбже╣епеъе╫е╚д╬─ъ╡┴д╦дшдъбд└ш╞м╚╓├╧д╦╟█├╓д╡дьдыбе
+ * хЙ▓ш╛╝уБ┐уГЩуВпуВ┐уБошинхоЪя╝О
+ * уГкуГ│уВлуГ╗уВ╣уВпуГкуГЧуГИуБохоЪч╛йуБлуВИуВКя╝МхЕИщанчХкхЬ░уБлщЕНч╜оуБХуВМуВЛя╝О
  */
 void (*vectors[])(void) = {
   start, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 

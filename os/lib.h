@@ -9,10 +9,10 @@ char *strcpy(char *dst, const char *src);
 int strcmp(const char *s1, const char *s2);
 int strncmp(const char *s1, const char *s2, int len);
 
-int putc(unsigned char c);    /* £±Ê¸»úÁ÷¿® */
-unsigned char getc(void);     /* £±Ê¸»ú¼õ¿® */
-int puts(unsigned char *str); /* Ê¸»úÎóÁ÷¿® */
-int gets(unsigned char *buf); /* Ê¸»úÎó¼õ¿® */
-int putxval(unsigned long value, int column); /* ¿ôÃÍ¤Î16¿ÊÉ½¼¨ */
+int putc(unsigned char c);    /* ï¼‘æ–‡å­—é€ä¿¡ */
+unsigned char getc(void);     /* ï¼‘æ–‡å­—å—ä¿¡ */
+int puts(unsigned char *str); /* æ–‡å­—åˆ—é€ä¿¡ */
+int gets(unsigned char *buf); /* æ–‡å­—åˆ—å—ä¿¡ */
+int putxval(unsigned long value, int column); /* æ•°å€¤ã®16é€²è¡¨ç¤º */
 
 #endif
