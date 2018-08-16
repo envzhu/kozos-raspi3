@@ -1,31 +1,25 @@
-PREFIX  = /usr/local
-ARCH    = h8300-elf
-BINDIR  = $(PREFIX)/bin
-ADDNAME = $(ARCH)-
+# configure
+ADDNAME = llvm-
 
-AR      = $(BINDIR)/$(ADDNAME)ar
-AS      = $(BINDIR)/$(ADDNAME)as
-CC      = $(BINDIR)/$(ADDNAME)gcc
-LD      = $(BINDIR)/$(ADDNAME)ld
-NM      = $(BINDIR)/$(ADDNAME)nm
-OBJCOPY = $(BINDIR)/$(ADDNAME)objcopy
-OBJDUMP = $(BINDIR)/$(ADDNAME)objdump
-RANLIB  = $(BINDIR)/$(ADDNAME)ranlib
-STRIP   = $(BINDIR)/$(ADDNAME)strip
+AR      = $(ADDNAME)ar
+AS 			= $(ADDNAME)as  -target aarch64-elf 
+CC 			= clang  -target aarch64-elf 
+LD 			= ld.lld
+NM      = $(ADDNAME)nm
+OBJCOPY = $(ADDNAME)objcopy-6.0
+OBJDUMP = $(ADDNAME)objdump
+RANLIB  = $(ADDNAME)ranlib
+STRIP = 	$(OBJCOPY) -strip-all
 
-H8WRITE = ../../tools/h8write/h8write
-
-# FreeBSD-4.x:/dev/cuaaX, FreeBSD-6.x:/dev/cuadX, FreeBSD(USB):/dev/cuaUx
-# Linux:/dev/ttySx, Linux(USB):/dev/ttyUSBx, Windows:comX
-H8WRITE_SERDEV = /dev/cuad0
+QEMU = qemu-system-aarch64
+GDB  = aarch64-elf-gdb
 
 OBJS  = vector.o startup.o intr.o main.o interrupt.o
 OBJS += lib.o serial.o xmodem.o elf.o
 
 TARGET = kzload
 
-CFLAGS = -Wall -mh -nostdinc -nostdlib -fno-builtin
-#CFLAGS += -mint32 # intを32ビットにすると掛算／割算ができなくなる
+CFLAGS = -Wall -mcpu=cortex-a53 -marm -nostdinc -nostdlib -fno-builtin
 CFLAGS += -I.
 #CFLAGS += -g
 CFLAGS += -Os
@@ -53,13 +47,26 @@ $(TARGET) :	$(OBJS)
 .S.o :		$<
 		$(CC) -c $(CFLAGS) $<
 
-$(TARGET).mot :	$(TARGET)
-		$(OBJCOPY) -O srec $(TARGET) $(TARGET).mot
+$(TARGET).img :	$(TARGET)
+		$(OBJCOPY) -O binary $(TARGET) $(TARGET).img
 
-image :		$(TARGET).mot
+image :		$(TARGET).img
 
-write :		$(TARGET).mot
-		$(H8WRITE) -3069 -f20 $(TARGET).mot $(H8WRITE_SERDEV)
+run: $(TARGET).elf
+	$(QEMU) \
+	-m 512 -M raspi3 -kernel $(TARGET).elf \
+	-serial null -serial stdio \
+	-accel tcg,thread=single -smp 4
+
+qemu: $(TARGET).elf
+	$(QEMU) \
+	-m 512 -M raspi3 -kernel $(TARGET).elf \
+	-serial null -serial stdio \
+	-gdb tcp::12345 -S \
+	-accel tcg,thread=single -smp 1
+
+gdb: $(TARGET).elf
+	$(AARCH64-GDB) $(TARGET).elf -x gdb.src
 
 clean :
-		rm -f $(OBJS) $(TARGET) $(TARGET).elf $(TARGET).mot
+		rm -f $(OBJS) $(TARGET) $(TARGET).elf $(TARGET).img

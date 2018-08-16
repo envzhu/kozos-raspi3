@@ -1,17 +1,18 @@
-PREFIX  = /usr/local
-ARCH    = h8300-elf
-BINDIR  = $(PREFIX)/bin
-ADDNAME = $(ARCH)-
+# configure
+ADDNAME = llvm-
 
-AR      = $(BINDIR)/$(ADDNAME)ar
-AS      = $(BINDIR)/$(ADDNAME)as
-CC      = $(BINDIR)/$(ADDNAME)gcc
-LD      = $(BINDIR)/$(ADDNAME)ld
-NM      = $(BINDIR)/$(ADDNAME)nm
-OBJCOPY = $(BINDIR)/$(ADDNAME)objcopy
-OBJDUMP = $(BINDIR)/$(ADDNAME)objdump
-RANLIB  = $(BINDIR)/$(ADDNAME)ranlib
-STRIP   = $(BINDIR)/$(ADDNAME)strip
+AR      = $(ADDNAME)ar
+AS 			= $(ADDNAME)as  -target aarch64-elf 
+CC 			= clang  -target aarch64-elf 
+LD 			= ld.lld
+NM      = $(ADDNAME)nm
+OBJCOPY = $(ADDNAME)objcopy-6.0
+OBJDUMP = $(ADDNAME)objdump
+RANLIB  = $(ADDNAME)ranlib
+STRIP = 	$(OBJCOPY) -strip-all
+
+QEMU = qemu-system-aarch64
+GDB  = aarch64-elf-gdb
 
 OBJS  = startup.o main.o interrupt.o
 OBJS += lib.o serial.o
@@ -21,10 +22,9 @@ OBJS += kozos.o syscall.o memory.o consdrv.o command.o
 
 TARGET = kozos
 
-CFLAGS = -Wall -mh -nostdinc -nostdlib -fno-builtin
-#CFLAGS += -mint32 # intを32ビットにすると掛算／割算ができなくなる
+CFLAGS = -Wall -mcpu=cortex-a53 -marm -nostdinc -nostdlib -fno-builtin
 CFLAGS += -I.
-#CFLAGS += -g
+CFLAGS += -g
 CFLAGS += -Os
 CFLAGS += -DKOZOS
 
@@ -49,6 +49,23 @@ $(TARGET) :	$(OBJS)
 
 .S.o :		$<
 		$(CC) -c $(CFLAGS) $<
+
+
+run: $(TARGET).elf
+	$(QEMU) \
+	-m 512 -M raspi3 -kernel $(TARGET).elf \
+	-serial null -serial stdio \
+	-accel tcg,thread=single -smp 4
+
+qemu: $(TARGET).elf
+	$(QEMU) \
+	-m 512 -M raspi3 -kernel $(TARGET).elf \
+	-serial null -serial stdio \
+	-gdb tcp::12345 -S \
+	-accel tcg,thread=single -smp 1
+
+gdb: $(TARGET).elf
+	$(GDB) $(TARGET).elf -x gdb.src
 
 clean :
 		rm -f $(OBJS) $(TARGET) $(TARGET).elf
