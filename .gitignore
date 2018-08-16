@@ -1,4 +1,7 @@
 .vscode/
+kzload*
+kozos*
+-*
 *.o
 *.elf
 *.img

@@ -14,7 +14,7 @@ STRIP = 	$(OBJCOPY) -strip-all
 QEMU = qemu-system-aarch64
 GDB  = aarch64-elf-gdb
 
-OBJS  = vector.o startup.o intr.o main.o interrupt.o
+OBJS  = startup.o main.o
 OBJS += lib.o serial.o xmodem.o elf.o
 
 TARGET = kzload
@@ -34,7 +34,7 @@ LFLAGS = -static -T ld.scr -L.
 all :		$(TARGET)
 
 $(TARGET) :	$(OBJS)
-		$(CC) $(OBJS) -o $(TARGET) $(CFLAGS) $(LFLAGS)
+		$(LD) $(OBJS) -o $(TARGET) $(LFLAGS)
 		cp $(TARGET) $(TARGET).elf
 		$(STRIP) $(TARGET)
 

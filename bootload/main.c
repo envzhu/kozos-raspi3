@@ -1,5 +1,4 @@
 #include "defines.h"
-#include "interrupt.h"
 #include "serial.h"
 #include "xmodem.h"
 #include "elf.h"
@@ -8,17 +7,14 @@
 static int init(void)
 {
   /* 以下はリンカ・スクリプトで定義してあるシンボル */
-  extern int erodata, data_start, edata, bss_start, ebss;
+  extern int _erodata, _data_start, _edata, _bss_start, _ebss;
 
   /*
    * データ領域とBSS領域を初期化する．この処理以降でないと，
    * グローバル変数が初期化されていないので注意．
    */
-  memcpy(&data_start, &erodata, (long)&edata - (long)&data_start);
-  memset(&bss_start, 0, (long)&ebss - (long)&bss_start);
-
-  /* ソフトウエア・割り込みベクタを初期化する */
-  softvec_init();
+  memcpy(&_data_start, &_erodata, (long)&_edata - (long)&_data_start);
+  memset(&_bss_start, 0, (long)&_ebss - (long)&_bss_start);
 
   /* シリアルの初期化 */
   serial_init(SERIAL_DEFAULT_DEVICE);
@@ -63,7 +59,7 @@ int main(void)
   static unsigned char *loadbuf = NULL;
   char *entry_point;
   void (*f)(void);
-  extern int buffer_start; /* リンカ・スクリプトで定義されているバッファ */
+  extern int _buffer_start; /* リンカ・スクリプトで定義されているバッファ */
 
   INTR_DISABLE; /* 割込み無効にする */
 
@@ -76,7 +72,7 @@ int main(void)
     gets(buf); /* シリアルからのコマンド受信 */
 
     if (!strcmp(buf, "load")) { /* XMODEMでのファイルのダウンロード */
-      loadbuf = (char *)(&buffer_start);
+      loadbuf = (char *)(&_buffer_start);
       size = xmodem_recv(loadbuf);
       wait(); /* 転送アプリが終了し端末アプリに制御が戻るまで待ち合わせる */
       if (size < 0) {
