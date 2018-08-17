@@ -143,8 +143,8 @@ static kz_thread_id_t thread_run(kz_func_t func, char *name, int priority,
   int i;
   kz_thread *thp;
   uint32 *sp;
-  extern char userstack; /* リンカ・スクリプトで定義されるスタック領域 */
-  static char *thread_stack = &userstack;
+  extern char _userstack; /* リンカ・スクリプトで定義されるスタック領域 */
+  static char *thread_stack = &_userstack;
 
   /* 空いているタスク・コントロール・ブロックを検索 */
   for (i = 0; i < THREAD_NUM; i++) {
@@ -370,11 +370,11 @@ static kz_thread_id_t thread_recv(kz_msgbox_id_t id, int *sizep, char **pp)
   return current->syscall.param->un.recv.ret;
 }
 
+static void thread_intr(softvec_type_t type, unsigned long sp);
+
 /* システム・コールの処理(kz_setintr():割込みハンドラ登録) */
 static int thread_setintr(softvec_type_t type, kz_handler_t handler)
 {
-  static void thread_intr(softvec_type_t type, unsigned long sp);
-
   /*
    * 割込みを受け付けるために，ソフトウエア・割込みベクタに
    * OSの割込み処理の入口となる関数を登録する．
@@ -568,7 +568,7 @@ void kz_syscall(kz_syscall_type_t type, kz_syscall_param_t *param)
 {
   current->syscall.type  = type;
   current->syscall.param = param;
-  asm volatile ("trapa #0"); /* トラップ割込み発行 */
+  asm volatile ("svc #0"); /* トラップ割込み発行 */
 }
 
 /* サービス・コール呼び出し用ライブラリ関数 */
